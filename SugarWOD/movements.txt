@@ -1,0 +1,120 @@
+# === MOVEMENTS === #
+#
+Air Squat
+Back Extension/Hip Extension
+Back Scale
+Back Squat
+Back Tuck
+Backward Roll
+Ball Slam
+Bear Crawl
+Bench Press
+Bent Over Row
+Bike/Air Bike/Assault Bike/Cycle
+Box Jump
+Box Step-Up/Box Step Up
+Broad Jump
+Burpee
+Cardio
+Clean
+#Core
+Curl
+Deadlift
+Devil Press
+Dip/Ring Dip/Tricep Dip
+Double-Under/Double Under
+Dumbbell Swing
+Farmer's Carry/Farmer
+Fireman's Carry/Fireman
+Floor Wiper
+Flutter Kick/Leg Raise
+Forward Roll
+Front Scale
+Front Squat
+GHD Sit-Up/ GHD sit up
+Goblet Squat
+Good Morning
+Grasshopper
+Ground-to-Overhead/Ground to Overhead
+Gymnastics
+Hack Squat
+Handstand Hold
+Handstand Push-Up/Handstand Push Up
+Handstand Walk
+Hang Hold
+Heel Clap
+Hinging
+Hollow Hold
+Hollow Rock
+Inchworm
+Inverted Burpee
+Inverted Hang
+Jerk
+Jumping Jack
+Kettlebell Swing
+Kettlebell Tater
+L-Sit/L Sit
+Lateral Jump
+Lateral Raise
+Lunge
+Lunging
+Man Maker
+Monkey Bar Traverse
+Mountain Climber
+Muscle-Up/Muscle Up
+Overhead Squat
+Paddleboard
+Parallette Pass-Through
+Pegboard Ascent
+Pistol
+Plank Hold
+Pressing
+Pull-Up/Pull Up
+Pulling
+Push Press
+Push-Up/Push Up
+Ring Row
+Rope Climb
+Row
+Run
+Russian Twist
+Shoulder-to-Overhead/Shoulder to Overhead
+Single-Under/Single Under
+Sit-Up/Sit Up
+Ski
+Sled Pull
+Sled Push
+Snatch
+#Snatch Balance
+Sots Press
+Squat
+Strict Press
+Sumo Deadlift High-Pull
+Superman Hold/Arch Hold
+Swim
+Thruster
+Tip Touch
+Tire Flip
+Toes-to-Bar/Knees-to-Elbows/Toes to Bar/Knees to Elbows
+Triple-Under/Triple Under
+Tuck Jump
+Tuck Up
+Turkish Get-Up/Get Up
+Up-Down/Up Down/Down Up/Down-Up
+Upper Body
+V-Up/V Up
+Wall Ball Shot
+Wall Climb/Wall Walk
+Wall Sit
+Weighted Walk/Weighted Run
+Weightlifting
+Yoke Carry
+#
+# === WORKOUT TYPES === #
+#
+AMRAP
+EMOM/Every Minute/On The Minute
+For Load
+For Time
+Tabata
+Partner
