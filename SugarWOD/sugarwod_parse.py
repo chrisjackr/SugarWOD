@@ -12,6 +12,7 @@ import datetime
 import os
 import json
 from sugarwod_scrape_v1 import create_list_to_save
+import credentials as creds
 
 
 # =========== AUXINLARY DEFINITIONS =========== #
@@ -29,7 +30,7 @@ def parse_week_file(weekdate, show=False):
     #print(months)
     
 
-    with open(r'C:\Users\cjr19\Python\Repositories\SugarWOD\HTML_files\wod_{}.html'.format(weekdate), encoding='utf-8') as f:
+    with open(r'SugarWOD\HTML_files_{}\wod_{}.html'.format(creds.gym,weekdate), encoding='utf-8') as f:
         soup = BeautifulSoup(f,'html.parser')
 
         # === CREATES DATES LIST === #
@@ -74,7 +75,7 @@ def parse_week_file(weekdate, show=False):
         return(week)
 
 def display_json():
-    with open("sugarwod_json.json","r") as f:
+    with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","r") as f:
             all_weeks = json.load(f)
     pprint.pprint(all_weeks)
 
@@ -89,11 +90,11 @@ def sugarwod_parse(scrape_dates=[], reset = False):
         
     # ================ RESETS JSON FROM SCRATCH BY PARSING ALL HTML FILES ==============================
     if reset:
-        weekdate_list = os.listdir("C:\\Users\\cjr19\\Python\\Repositories\\SugarWOD\\HTML_files")
+        weekdate_list = os.listdir(f"SugarWOD\\HTML_files_{creds.gym}")
         weekdate_list = [date[4:12] for date in weekdate_list]
         weekdate_list = list(set(weekdate_list))
         weekdate_list.sort()
-        with open("sugarwod_json.json","w") as f:
+        with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","w") as f:
             f.truncate(0)
             f = json.dump({},f)
     # ====================================================================================================
@@ -105,10 +106,10 @@ def sugarwod_parse(scrape_dates=[], reset = False):
             count += 1
             try:
                 week = parse_week_file(weekdate)
-                with open("sugarwod_json.json","r") as f:
+                with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","r") as f:
                     all_weeks = json.load(f)
                 all_weeks = dict(all_weeks, **week)
-                with open("sugarwod_json.json","w") as f:
+                with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","w") as f:
                     f = json.dump(all_weeks,f)
             
             except:

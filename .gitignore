@@ -1,8 +1,8 @@
 #Other files
 SugarWOD/credentials.py
-SugarWOD/HTML_files/
+SugarWOD/HTML_files_*/
 SugarWOD/sugarwod_sql.db
-SugarWOD/sugarwod_json.json
+SugarWOD/sugarwod_*_json.json
 SugarWOD/BrowseWorkoutCollections_Movement.html
 SugarWOD/BrowseWorkoutCollections_Movement_files/
 sugar_env/

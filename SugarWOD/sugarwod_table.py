@@ -6,12 +6,8 @@
 
 import sqlite3
 from sqlite3 import Error
-from bs4 import BeautifulSoup
-import pprint
-import datetime
+import credentials as creds
 import os
-import re
-import csv
 import json
 from progress.bar import Bar
 from sugarwod_scrape_v1 import create_list_to_save
@@ -61,10 +57,7 @@ def insert_workout_table(file_name,headers,insert):
     conn = None
     try:
         conn = sqlite3.connect(file_name)
-        #print('''INSERT INTO sugarwod_table {} VALUES {};'''.format(headers,insert))
-        #print(all_headers)
-        conn.execute('''INSERT INTO sugarwod_table {} VALUES {};'''.format(headers,insert))
-        #conn.execute('''INSERT INTO sugarwod_table (WeekDate,Workout,STAR) VALUES ('FG','FG',NULL);'''.format(headers,insert))
+        conn.execute(f'''INSERT INTO sugarwod_{creds.gym}_table {headers} VALUES {insert};''')
     
         conn.commit()
     except Error as e:
@@ -113,25 +106,25 @@ def sugarwod_table(scrape_dates=[],reset = False):
     headers = ''
     columns = ''
     #Create headers from movements.text to use when creating table...
-    with open('movements.txt','r') as f:
+    with open('SugarWOD\movements.txt','r') as f:
         for line in f:
             if line.startswith('#'):
                 pass
             else:
                 headers = headers + '[{}] BOOL, '.format(line.strip('\n').split('/')[0])
                 columns = columns +'"{}",'.format(line.strip('\n').split('/')[0])
-    all_headers = f'''CREATE TABLE IF NOT EXISTS  sugarwod_table ([WeekDate] TEXT, [Title] TEXT, [Workout] TEXT, {headers}[STAR] BOOL)'''
-    all_columns = f'(WeekDate,Title,Workout,{columns}STAR)'
+    all_headers = f'''CREATE TABLE IF NOT EXISTS  sugarwod_{creds.gym}_table ([WeekDate] TEXT, [Title] TEXT, [Workout] TEXT, {headers}[STAR] BOOL)'''
+    all_columns = f'''(WeekDate,Title,Workout,{columns}STAR)'''
 
     #Create list of all weekdates (that should be saved in json file) to be itereated through when adding info to table,
     if reset:
         # If reset, delete database file and create list of all available dates.
-        os.remove("C:\\Users\\cjr19\\Python\\Repositories\\SugarWOD\\sugarwod_sql.db")
+        os.remove("SugarWOD\\sugarwod_sql.db")
         # done_dates = os.listdir("C:\\Users\\cjr19\\Python\\Repositories\\SugarWOD\\HTML_files")
         # done_dates = [date[4:12] for date in done_dates]
         # done_dates = list(set(done_dates))
 
-        with open("sugarwod_json.json","r") as f:
+        with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","r") as f:
             all_weeks = json.load(f)
 
         weekdates = list(all_weeks.keys())
@@ -139,7 +132,7 @@ def sugarwod_table(scrape_dates=[],reset = False):
     else:
         weekdates = scrape_dates
 
-    create_table('sugarwod_sql.db',all_headers)
+    create_table('SugarWOD\sugarwod_sql.db',all_headers)
     #print(all_headers)
 
     #=============TEST_DATE=============#
@@ -150,7 +143,7 @@ def sugarwod_table(scrape_dates=[],reset = False):
 
     #========================CHECK_EXERCISES======================#
     movements = []
-    create_values_list('movements.txt',movements)
+    create_values_list('SugarWOD\movements.txt',movements)
 
     #print(list(all_weeks.keys()))
     with Bar('Generating Database...', max=len(weekdates)) as bar:
@@ -160,7 +153,7 @@ def sugarwod_table(scrape_dates=[],reset = False):
                 #print('KEY',key,'\n',all_weeks[weekdate][key])
                 s = search(all_weeks[weekdate][key].lower(),movements,show=False)
                 s = create_values_string(s,all_weeks,weekdate,key)
-                insert_workout_table('sugarwod_sql.db',all_columns,s)
+                insert_workout_table('SugarWOD\sugarwod_sql.db',all_columns,s)
                 #print(s)
             bar.next()
 

@@ -22,7 +22,7 @@ import os
 
 # =========== AUXILARY DEFINITIONS =========== #
 
-def login(browser,email, password):
+def login(browser,credemail, credpassword):
     # Fills out and submits login page form.
     try:
         email = browser.find_element_by_id("inputEmail")
@@ -31,15 +31,15 @@ def login(browser,email, password):
         print('\nCould not enter login details.\n')
         quit()
 
-    email.send_keys('cjr1977@hotmail.co.uk')
-    password.send_keys('SugarWOD123!')          
+    email.send_keys(str(credemail))
+    password.send_keys(str(credpassword))          
     password.send_keys(Keys.ENTER)
 
 def save_page(save_name):
     # Saves the current webpage as an html file in HTML_files folder.
     pyautogui.hotkey('ctrl','s')
     time.sleep(10)
-    file_name = 'C:\\Users\\cjr19\\Python\\Repositories\\SugarWOD\\HTML_files\\wod_'+save_name+'.html'
+    file_name = f'SugarWOD\\HTML_files_{creds.gym}\\wod_{save_name}.html'
     pyautogui.typewrite(file_name.lower())
     pyautogui.hotkey('enter')
     print(f'Week {save_name} saved...')
@@ -55,7 +55,7 @@ def create_list_to_save():
         next_date = next_date + tdelta
         all_dates.append(next_date.date().strftime(r'%Y%m%d'))
     
-    done_dates = os.listdir("C:\\Users\\cjr19\\Python\\Repositories\\SugarWOD\\HTML_files")
+    done_dates = os.listdir(f"SugarWOD\\HTML_files_{creds.gym}")
     done_dates = [date[4:12] for date in done_dates]
     scrape_dates = list(set(all_dates)-set(done_dates))
     if bool(scrape_dates):
