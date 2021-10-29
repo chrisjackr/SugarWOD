@@ -134,7 +134,8 @@ This is an example of how to list things you need to use the software and how to
 Once installed, scraping can begin by following these steps:
 </br>
 1. Update <code>credentials_template.py</code> template with <u>email</u>, <u>password</u> and <u>gym name</u> and save as <code>credentials.py</code>. If you have access to multiple gyms on the SugarWOD website, make sure the one you want to scrape is selected. Note, multiple gyms can be scraped and saved to different tables in the database file, but these will have to be run seperately.
-2. To create the intial database, run the <code>main.py</code> file with <code>reset = False</code>. Rerunning the this file in future will only add new workouts to the existing database. If the database needs to be created from scratch for any reason, run the same script with <code>reset = True</code>.
+
+2. To create the intial database, run the <code>main.py</code> file with <code>resetvar = False</code>. Rerunning the this file in future will only add new workouts to the existing database. If the database needs to be created from scratch for any reason, run the same script with <code>resetvar = True</code>.
 
 The script will create a JSON file called **sugarwod_json_{gym_name}** and from this a database file called **sugarwod_sql.db**.
 <p align="right">(<a href="#top">back to top</a>)</p>
