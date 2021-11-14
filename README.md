@@ -80,13 +80,13 @@
 
 This project is a webscraper that collects previous CrossFit workouts from the SugarWOD website. Each workout has an associated date, title and workout description; each workout consists of different exercises (e.g. Deadlift) and workout types (e.g. AMRAP). These data are saved in a SQL databse so that workouts can be queried to find ones with a particular exercise etc. 
 
-**FUTURE UPDATE:**   
-Create of a interactive dashboard using <code>Dash</code> to display workout data.
+**WORK IN PROGRESS:**   
+Interactive dashboard using <code>Dash</code> to display workout data.
 
 **IMPROVEMENTS:**<br>
 Please suggest future improvements <a href="https://github.com/chrisjackr/SugarWOD_Project/issues">here</a>!
 <ul>
-  <li>SugarWOD may have an API available to use.</li>
+  <li><strike>SugarWOD may have an API available to use.</strike> Currently only available to gym owners.</li>
   <li>Use Splash + Docker to collect info from dynamically generated webpages.</li>
 </ul>
 
