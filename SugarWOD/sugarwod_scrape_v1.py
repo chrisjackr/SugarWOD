@@ -39,9 +39,13 @@ def save_page(save_name):
     # Saves the current webpage as an html file in HTML_files folder.
     pyautogui.hotkey('ctrl','s')
     time.sleep(10)
-    file_name = f'SugarWOD\\HTML_files_{creds.gym}\\wod_{save_name}.html'
+    file_name = os.getcwd()+f'\\SugarWOD\\HTML_files_{creds.gym}\\wod_{save_name}.html'
     pyautogui.typewrite(file_name.lower())
     pyautogui.hotkey('enter')
+    while True:
+        time.sleep(3)
+        if os.path.isfile(file_name):
+            break
     print(f'Week {save_name} saved...')
 
 def create_list_to_save():
@@ -54,8 +58,8 @@ def create_list_to_save():
     while next_date < (now - tdelta):
         next_date = next_date + tdelta
         all_dates.append(next_date.date().strftime(r'%Y%m%d'))
-    
-    done_dates = os.listdir(f"SugarWOD\\HTML_files_{creds.gym}")
+
+    done_dates = os.listdir(os.getcwd()+f'\\SugarWOD\\HTML_files_{creds.gym}')
     done_dates = [date[4:12] for date in done_dates]
     scrape_dates = list(set(all_dates)-set(done_dates))
     if bool(scrape_dates):

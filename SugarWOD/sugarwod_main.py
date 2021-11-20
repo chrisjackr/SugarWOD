@@ -9,7 +9,7 @@ from sugarwod_parse import *
 from sugarwod_table import *
 
 # === RESET PARAMETER === #
-resetvar = False
+resetvar = True
 
 if __name__ == '__main__':
 
@@ -22,6 +22,7 @@ if __name__ == '__main__':
             print('\nTerminated.\n')
             quit()
 
+    print('CWD: ',os.getcwd())
     scrape_dates = sugarwod_scrape_v1()  
     sugarwod_parse(scrape_dates, reset = resetvar)
     sugarwod_table(scrape_dates, reset = resetvar)

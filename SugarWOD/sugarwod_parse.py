@@ -30,7 +30,7 @@ def parse_week_file(weekdate, show=False):
     #print(months)
     
 
-    with open(r'SugarWOD\HTML_files_{}\wod_{}.html'.format(creds.gym,weekdate), encoding='utf-8') as f:
+    with open(os.getcwd()+f'\\SugarWOD\\HTML_files_{creds.gym}\\wod_{weekdate}.html', encoding='utf-8') as f:
         soup = BeautifulSoup(f,'html.parser')
 
         # === CREATES DATES LIST === #
@@ -75,7 +75,7 @@ def parse_week_file(weekdate, show=False):
         return(week)
 
 def display_json():
-    with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","r") as f:
+    with open(os.getcwd()+f"\\SugarWOD\\sugarwod_{creds.gym}_json.json","r") as f:
             all_weeks = json.load(f)
     pprint.pprint(all_weeks)
 
@@ -90,11 +90,11 @@ def sugarwod_parse(scrape_dates=[], reset = False):
         
     # ================ RESETS JSON FROM SCRATCH BY PARSING ALL HTML FILES ==============================
     if reset:
-        weekdate_list = os.listdir(f"SugarWOD\\HTML_files_{creds.gym}")
+        weekdate_list = os.listdir(os.getcwd()+f"\\SugarWOD\\HTML_files_{creds.gym}")
         weekdate_list = [date[4:12] for date in weekdate_list]
         weekdate_list = list(set(weekdate_list))
         weekdate_list.sort()
-        with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","w") as f:
+        with open(os.getcwd()+f"\\SugarWOD\\sugarwod_{creds.gym}_json.json","w") as f:
             f.truncate(0)
             f = json.dump({},f)
     # ====================================================================================================
@@ -106,10 +106,10 @@ def sugarwod_parse(scrape_dates=[], reset = False):
             count += 1
             try:
                 week = parse_week_file(weekdate)
-                with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","r") as f:
+                with open(os.getcwd()+f"\\SugarWOD\\sugarwod_{creds.gym}_json.json","r") as f:
                     all_weeks = json.load(f)
                 all_weeks = dict(all_weeks, **week)
-                with open(f"SugarWOD\sugarwod_{creds.gym}_json.json","w") as f:
+                with open(os.getcwd()+f"\\SugarWOD\\sugarwod_{creds.gym}_json.json","w") as f:
                     f = json.dump(all_weeks,f)
             
             except:
