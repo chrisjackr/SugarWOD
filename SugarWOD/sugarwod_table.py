@@ -11,6 +11,7 @@ import os
 import json
 from progress.bar import Bar
 from sugarwod_scrape_v1 import create_list_to_save
+import datetime
 
 # def create_csv():
 #     # Used to help create movements.txt file (otherwise to be copied from WODwell website)
@@ -94,7 +95,8 @@ def search(text_to_search,values,show=False):
 def create_values_string(values_list,all_weeks,weekdate,key):
     values_list = [str(val) for val in values_list]
     values_list = ','.join(values_list)
-    values_string = f"({weekdate},'{key}','{all_weeks[weekdate][key]}',{values_list},NULL)"
+    weekday = str(datetime.datetime(int(weekdate[0:4]),int(weekdate[4:6]),int(weekdate[6:8])).strftime('%A'))
+    values_string = f"({weekdate},'{weekday}','{key}','{all_weeks[weekdate][key]}',{values_list},NULL)"
     return values_string
 
 
@@ -113,8 +115,8 @@ def sugarwod_table(scrape_dates=[],reset = False):
             else:
                 headers = headers + '[{}] BOOL, '.format(line.strip('\n').split('/')[0])
                 columns = columns +'"{}",'.format(line.strip('\n').split('/')[0])
-    all_headers = f'''CREATE TABLE IF NOT EXISTS  sugarwod_{creds.gym}_table ([WeekDate] TEXT, [Title] TEXT, [Workout] TEXT, {headers}[STAR] BOOL)'''
-    all_columns = f'''(WeekDate,Title,Workout,{columns}STAR)'''
+    all_headers = f'''CREATE TABLE IF NOT EXISTS  sugarwod_{creds.gym}_table ([WeekDate] TEXT, [Weekday] TEXT, [Title] TEXT, [Workout] TEXT, {headers}[STAR] BOOL)'''
+    all_columns = f'''(WeekDate,Weekday,Title,Workout,{columns}STAR)'''
 
     #Create list of all weekdates (that should be saved in json file) to be itereated through when adding info to table,
     with open(os.getcwd()+f"\\SugarWOD\\sugarwod_{creds.gym}_json.json","r") as f:
@@ -122,14 +124,14 @@ def sugarwod_table(scrape_dates=[],reset = False):
     
     if reset:
         # If reset, delete database file and create list of all available dates.
-        os.remove(os.getcwd()+f"\\SugarWOD\\sugarwod_sql.db")
-        # done_dates = os.listdir("C:\\Users\\cjr19\\Python\\Repositories\\SugarWOD\\HTML_files")
-        # done_dates = [date[4:12] for date in done_dates]
-        # done_dates = list(set(done_dates))
-
+        try:
+            os.remove(os.getcwd()+f"\\SugarWOD\\sugarwod_sql.db")
+        except FileNotFoundError:
+            print('No database exists, creating new file...')
         weekdates = list(all_weeks.keys())
         #pprint.pprint(all_weeks)
     else:
+        # Otherwise use only weekdates just scraped.
         weekdates = scrape_dates
 
     create_table(os.getcwd()+f"\\SugarWOD\\sugarwod_sql.db",all_headers)
@@ -151,10 +153,11 @@ def sugarwod_table(scrape_dates=[],reset = False):
             #print('\nWEEKDATE',weekdate)
             for key in list(all_weeks[weekdate].keys()):
                 #print('KEY',key,'\n',all_weeks[weekdate][key])
-                s = search(all_weeks[weekdate][key].lower(),movements,show=False)
-                s = create_values_string(s,all_weeks,weekdate,key)
-                insert_workout_table(os.getcwd()+"\\SugarWOD\\sugarwod_sql.db",all_columns,s)
-                #print(s)
+                if not 'warm up' in key.lower() and not'warmup' in key.lower():
+                    s = search(all_weeks[weekdate][key].lower(),movements,show=False)
+                    s = create_values_string(s,all_weeks,weekdate,key)
+                    insert_workout_table(os.getcwd()+"\\SugarWOD\\sugarwod_sql.db",all_columns,s)
+                    #print(s)
             bar.next()
 
         
