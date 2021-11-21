@@ -87,7 +87,7 @@ Sled Push
 Snatch
 #Snatch Balance
 Sots Press
-Squat
+#Squat
 Strict Press
 Sumo Deadlift High-Pull
 Superman Hold/Arch Hold
