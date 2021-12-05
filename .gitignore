@@ -4,7 +4,9 @@ SugarWOD/HTML_files_*/
 SugarWOD/sugarwod_sql.db
 SugarWOD/sugarwod_*_json.json
 SugarWOD/BrowseWorkoutCollections_Movement.html
+SugarWOD/test.py
 SugarWOD/BrowseWorkoutCollections_Movement_files/
+
 sugar_env/
 
 # Byte-compiled / optimized / DLL files
