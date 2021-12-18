@@ -117,4 +117,5 @@ EMOM/Every Minute/On The Minute
 For Load
 For Time
 Tabata
-Partner
+Partner/Pairs/team of 2
+Team
