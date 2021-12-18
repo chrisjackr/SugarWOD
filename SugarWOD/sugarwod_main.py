@@ -9,11 +9,17 @@ from sugarwod_parse import *
 from sugarwod_table import *
 
 # === RESET PARAMETER === #
-resetvar = True
+#resetvar = True
 
 if __name__ == '__main__':
 
     print('\n=============== SUGARDWOD STARTED ===============')
+    resetask = input('\nReset table? [Y/N]')
+    if resetask.lower() == 'y':
+        resetvar = True
+    else:
+        resetvar = False
+        
     if resetvar:
         invar = input('\nReset json/table selected. This will rewrite .json file and recreate .db file.\n\nContinue? [Y/N] ')
         if invar.lower() == 'y':
