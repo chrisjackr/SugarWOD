@@ -162,24 +162,24 @@ def sugarwod_table(scrape_dates=[],reset = False):
     create_values_list(os.getcwd()+'\\movements.txt',movements)
 
     #print(list(all_weeks.keys()))
-    #with Bar('Generating Database...', max=len(weekdates)) as bar:
-    for weekdate in weekdates:
-        #print('\nWEEKDATE',weekdate)
-        for key in list(all_weeks[weekdate].keys()):
-            #print('KEY',key,'\n',all_weeks[weekdate][key])
-            if not 'warm up' in key.lower() and not'warmup' in key.lower():
-                s = search(all_weeks[weekdate][key].lower(),movements,show=False)
-                s = create_values_string(s,all_weeks,weekdate,key)
-                insert_workout_table(os.getcwd()+"\\sugarwod_sql.db",all_columns,s)
-                #print(s)
-            
-            for move in movements[-6:]:
-                if search(key.lower(),[move],show=False)[0]:
-                    #print('\n',key.lower())
-                    #print('Move: ',move,'\nSearch: ',search(key.lower(),[move],show=False)[0])
-                    check_name(os.getcwd()+"\\sugarwod_sql.db",move.split('/')[0],weekdate)
-
-        #bar.next()
+    with Bar('Generating Database...', max=len(weekdates)) as bar:
+        for weekdate in weekdates:
+            #print('\nWEEKDATE',weekdate)
+            for key in list(all_weeks[weekdate].keys()):
+                #print('KEY',key,'\n',all_weeks[weekdate][key])
+                k = key.lower()
+                if not 'warm up' in k and not'warmup' in k and not 'class plan' in k and not 'workout brief' in k and not 'session' in k and not 'demo round' in k:
+                    s = search(all_weeks[weekdate][key].lower(),movements,show=False)
+                    s = create_values_string(s,all_weeks,weekdate,key)
+                    insert_workout_table(os.getcwd()+"\\sugarwod_sql.db",all_columns,s)
+                    #print(s)
+                
+                for move in movements[-8:]:
+                    if search(k,[move],show=False)[0]:
+                        #print('\n',key.lower())
+                        #print('Move: ',move,'\nSearch: ',search(key.lower(),[move],show=False)[0])
+                        check_name(os.getcwd()+"\\sugarwod_sql.db",move.split('/')[0],weekdate)
+            bar.next()
 
         
 
@@ -187,7 +187,7 @@ if __name__ == '__main__':
     #sugarwod_table(reset = False)
     movements = []
     create_values_list(os.getcwd()+'\\movements.txt',movements)
-    print(movements[-6:])
+    print(movements[-8:])
     s = search('asd dog sdf',['dog/ref'],show=True)
     t = 'dog/ref'.split('/')[0]
     print(t)
