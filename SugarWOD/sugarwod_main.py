@@ -34,3 +34,16 @@ if __name__ == '__main__':
     sugarwod_table(scrape_dates, reset = resetvar)
 
     print('\n============= SUGARWOD DATABASE UPDATED =============\n')
+
+    invar = input('\nShow generate dashboard in browser? [Y/N] ')
+    if invar.lower() == 'y':
+        import sugarwod_dashboard
+        sugarwod_dashboard
+    
+    print('\nDashboard generated.\n')
+    print('\n============= FINISH =============\n')
+
+
+
+
+    
