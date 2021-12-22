@@ -77,6 +77,7 @@
 ## About The Project
 
 <!--[![Product Name Screen Shot][product-screenshot]](https://example.com)-->
+<u>**CHECK OUT THE EXAMPLE DASHBOARD sugarwod_dashboard_example.html**</u>
 
 This project is a webscraper that collects previous CrossFit workouts from the SugarWOD website. Each workout has an associated date, title and workout description; each workout consists of different exercises (e.g. Deadlift) and workout types (e.g. AMRAP). These data are saved in a SQL databse so that workouts can be queried to find ones with a particular exercise etc. 
 
