@@ -81,7 +81,7 @@
 This project is a webscraper that collects previous CrossFit workouts from the SugarWOD website. Each workout has an associated date, title and workout description; each workout consists of different exercises (e.g. Deadlift) and workout types (e.g. AMRAP). These data are saved in a SQL databse so that workouts can be queried to find ones with a particular exercise etc. 
 
 **WORK IN PROGRESS:**   
-Interactive dashboard using <code>Dash</code> to display workout data.
+<strike>Interactive dashboard using <code>Bokeh</code> to display workout data.</strike>
 
 **IMPROVEMENTS:**<br>
 Please suggest future improvements <a href="https://github.com/chrisjackr/SugarWOD_Project/issues">here</a>!
@@ -135,7 +135,9 @@ Once installed, scraping can begin by following these steps:
 </br>
 1. Update <code>credentials_template.py</code> template with <u>email</u>, <u>password</u> and <u>gym name</u> and save as <code>credentials.py</code>. If you have access to multiple gyms on the SugarWOD website, make sure the one you want to scrape is selected. Note, multiple gyms can be scraped and saved to different tables in the database file, but these will have to be run seperately.
 
-2. To create the intial database, run the <code>main.py</code> file with <code>resetvar = False</code>. Rerunning the this file in future will only add new workouts to the existing database. If the database needs to be created from scratch for any reason, run the same script with <code>resetvar = True</code>.
+2. To scrape workouts and save to a database, run the <code>main.py</code> in the ../SugarWOD directory. The choice to create a new database from scratch or append to an existing database is given as a **[Yes/No]** input (select **Y** if running for the first time. Choosing **N** in future will only add new workouts to the existing database - this would allow for old html files to be deleted.)
+
+3. Once the database is updated, a dashboard .html file is generated. The option is given to shown this in a browser before script finishes.
 
 The script will create a JSON file called **sugarwod_json_{gym_name}** and from this a database file called **sugarwod_sql.db**.
 <p align="right">(<a href="#top">back to top</a>)</p>
