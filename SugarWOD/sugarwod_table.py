@@ -185,10 +185,4 @@ def sugarwod_table(scrape_dates=[],reset = False):
 
 if __name__ == '__main__':
     #sugarwod_table(reset = False)
-    movements = []
-    create_values_list(os.getcwd()+'\\movements.txt',movements)
-    print(movements[-8:])
-    s = search('asd dog sdf',['dog/ref'],show=True)
-    t = 'dog/ref'.split('/')[0]
-    print(t)
-
+    pass
