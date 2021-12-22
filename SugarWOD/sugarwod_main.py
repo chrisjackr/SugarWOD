@@ -14,7 +14,7 @@ from sugarwod_table import *
 if __name__ == '__main__':
 
     print('\n=============== SUGARDWOD STARTED ===============')
-    resetask = input('\nReset table? [Y/N]')
+    resetask = input('\nReset table? [Y/N] ')
     if resetask.lower() == 'y':
         resetvar = True
     else:
