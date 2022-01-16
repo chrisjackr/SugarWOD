@@ -10,16 +10,20 @@
 import sqlite3
 from sqlite3 import Error
 
-from bokeh.models.filters import IndexFilter
 import credentials as creds
+from sugarwod_aux import insert_month_column
+
 import os
 import datetime
 import pandas as pd
+import numpy as np
+from collections import OrderedDict
 
 from bokeh.io import show
 from bokeh.plotting import output_file,  figure
 from bokeh.layouts import column, row, gridplot, layout
-from bokeh.models import  CustomJS, MultiChoice,  CheckboxButtonGroup, Div
+from bokeh.models.filters import IndexFilter
+from bokeh.models import  CustomJS, MultiChoice,  CheckboxButtonGroup, Div, Panel, Tabs, HoverTool
 from bokeh.models import CDSView, CustomJSFilter, IndexFilter
 from bokeh.models import ColumnDataSource, DataTable, DateFormatter, TableColumn
 
@@ -28,7 +32,7 @@ from bokeh.models import ColumnDataSource, DataTable, DateFormatter, TableColumn
 conn = sqlite3.connect(os.getcwd()+"\\sugarwod_sql.db")
 df = pd.read_sql_query(f"SELECT * FROM sugarwod_{creds.gym}_table", conn)
 conn.close()
-#df0 = df.duplicated(subset=['WeekDate'])
+df = insert_month_column(df)
 df1 = df[['WeekDate','Weekday','Title']]
 df['Workout'] = df['Workout'].str.replace('\n','<br>')
 
@@ -76,7 +80,7 @@ df2 = df2.iloc[-40:]
 fig_src = ColumnDataSource(df2)
 
 # Create Bokeh plot and tweak appearanve
-plot=figure(width=550, x_range = (-70,190), y_range=list(df2['Exercise']),toolbar_location = None,title='Top 40 most frequent exercises in a workout:', x_axis_location="above")
+plot=figure(width=500, x_range = (-70,190), y_range=list(df2['Exercise']),toolbar_location = None,title='Top 40 most frequent exercises in a workout:', x_axis_location="above")
 plot.hbar(y='Exercise', right='Count', left=0, source=fig_src, height=0.7)
 plot.yaxis.fixed_location = 0
 plot.xaxis.visible = False
@@ -88,9 +92,62 @@ plot.xgrid.visible = False
 plot.ygrid.visible = False
 plot.outline_line_color = None
 
+tab1 = Panel(child=plot, title="Bar Chart")
+
+#=========== HEATMAP ===========
+MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+WEEKDAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+
+heat=figure(title=None, x_range=[d[:3] for d in WEEKDAYS],y_range =list(reversed(MONTHS)), tools="hover",width=500)
+#heat.plot_width=900
+#heat.plot_height = 400
+heat.toolbar_location=None #'left'
+
+#heat.rect("week", "day_of_week", 1, 1, source=source, line_color=None) #color=color
+
+heat.grid.grid_line_color = None
+heat.axis.axis_line_color = None
+heat.axis.major_tick_line_color = None
+heat.axis.major_label_text_font_size = "10pt"
+heat.axis.major_label_standoff = 0
+#heat.xaxis.major_label_orientation = "vertical"
+
+hover = heat.select(dict(type=HoverTool))
+#hover.tooltips = OrderedDict([('parties', '@parties'),])
+
+tab2 = Panel(child=heat, title="Heatmap")
+
+
+#=========== PIE ===========
+from bokeh.palettes import Blues8
+from bokeh.transform import cumsum
+
+df3 = pd.DataFrame(score)
+df3 = df3.reset_index()
+df3 = df3.set_axis(['type','value'],axis=1,inplace=False)
+
+df3['angle'] = df3['value']/df3['value'].sum() * 2*np.pi
+df3['color'] = Blues8[:len(df3)]
+pie_src = ColumnDataSource(df3)
+
+pie = figure(height=250, width = 500, title="Workout type:", toolbar_location=None,
+           tools="hover", tooltips="@type: @value", x_range=(-0.5, 1.0))
+
+pie.wedge(x=0, y=1, radius=0.35,
+        start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
+        line_color="white", fill_color='color', legend_field='type', source=pie_src)
+
+pie.axis.axis_label = None
+pie.axis.visible = False
+pie.grid.grid_line_color = None
+pie.outline_line_color = None
+pie.legend.location = 'right'
+
+tab3 = Panel(child=pie, title="Pie Chart")
+
 #=========== CREATE OTHER BOKEH WIDGET & CALLBACKS ============
 # Main Title
-title = Div(text=f"""<h1>{creds.gym} Crossfit Workouts</h1>""")
+title = Div(text=f"""<h1>{creds.gym} Crossfit Workouts </h1>""")
 # Workout Title
 workout_title = Div(text='<h3>{title}</h3>'.format(title=source.data['Title'][len(df)-1]), width = 400, height = 30)
 # Workout description
@@ -107,7 +164,6 @@ with open(os.getcwd()+f"\\movements.txt",'r') as f:
 columns = columns.split(',')[:-1]
 MOVEMENTS = columns[:-8] #['Air Squat',...,'Yoke Carry']
 TYPES = columns[-8:] #['AMRAP',...,'Team']
-WEEKDAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 
 # Create weekday button group widget
 weekday_button_group = CheckboxButtonGroup(labels=WEEKDAYS, active=[0,1,2,3,4,5,6], width=500)
@@ -241,5 +297,6 @@ source_shown.selected.js_on_change('indices', callback)
 
 #=========== OUTPUT ============
 grid = layout([column(title,row(column(data_table,weekday_button_group,row(column(Div(text="<h3>Movements:</h3>",height=25),multi_choice1), column(Div(text="<h3>Types of workout:</h3>",height=25),multi_choice2))),column(workout_title,workout_box),plot))])
+grid = layout([column(title,row(column(data_table,weekday_button_group,row(column(Div(text="<h3>Movements:</h3>",height=25),multi_choice1), column(Div(text="<h3>Types of workout:</h3>",height=25),multi_choice2))),column(workout_title,workout_box),Tabs(tabs=[tab1, tab3])))]) #removed tab2
 output_file("sugarwod_dashboard.html")
 show(grid)
